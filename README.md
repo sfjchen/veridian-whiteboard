@@ -1,98 +1,103 @@
 # Veridian Whiteboard
 
-Solo local-first AI math whiteboard. Standalone Next.js app — separate from the [Jon-fun](https://sfjc.dev) game hub.
+**Live demo:** [sfjc.dev/veridian](https://sfjc.dev/veridian) · **Video take:** [sfjc.dev/veridian?demo=1](https://sfjc.dev/veridian?demo=1)
 
-**Live:** [sfjc.dev/veridian](https://sfjc.dev/veridian) (proxied from main game hub — same pattern as other projects) · Direct: [veridian-whiteboard.vercel.app/veridian](https://veridian-whiteboard.vercel.app/veridian)
+Local-first AI math whiteboard — write by hand, analyze mistakes, get Socratic hints. No login, no database.
 
-**Repo:** [github.com/sfjchen/veridian-whiteboard](https://github.com/sfjchen/veridian-whiteboard) · **Agent standards:** [WORKING.md](WORKING.md) · **Remotes:** [REMOTES.md](REMOTES.md)
+**Repo:** [sfjchen/veridian-whiteboard](https://github.com/sfjchen/veridian-whiteboard) · **Domain:** **[2] Application / Product**
 
-## Video demo (grading rubric)
+---
 
-**Domain:** [2] Application / Product — deployed multimodal pipeline, not custom model training.
+## Rubric (Q1–Q4)
 
-Full Q1–Q4 talking points, architecture diagram, and 4-minute shot list: **[docs/VIDEO_DEMO_RUBRIC.md](docs/VIDEO_DEMO_RUBRIC.md)**
+### Q1 — Why build this?
 
-Repeatable live demo URL: [sfjc.dev/veridian?demo=1](https://sfjc.dev/veridian?demo=1) (pre-fills problem + Socratic context).
+**Bottlenecks:** handwritten feedback is slow; tutors/apps often leak full answers; LaTeX editors ≠ paper workflow; LMS bloat slows iteration.
 
-## Scope
+**Solution:** draw → analyze → red mistake dots → hint-only chat on the same canvas.
 
-- Write math on a web whiteboard.
-- Capture strokes as a PNG.
-- `POST /api/analyze`: OpenRouter Gemini OCR → mistake analysis → coordinate detection.
-- Show red mistake dots and short hints.
-- `POST /api/chat`: Socratic tutoring using the latest local analysis and local chat history.
-- No classrooms, teacher dashboard, Supabase, accounts, storage buckets, WebSockets, or Expo native shell in v1.
+> “Write math like on paper, get mistake-specific feedback in seconds, without the app doing your homework.”
 
-## Quick Start
+### Q2 — How it works
+
+**Pipeline (browser → Vercel → OpenRouter Gemini):**
+
+1. **OCR** — canvas PNG → LaTeX  
+2. **Mistake analysis** — JSON tags + severity vs. reference/context  
+3. **Coordinates** — red dots on the image  
+4. **Chat** — Socratic tutor with analysis in context  
+
+**Stack:** Next.js 16 (App Router) · Vercel serverless `/api/*` · OpenRouter · `localStorage` only · deployed at [sfjc.dev/veridian](https://sfjc.dev/veridian) via path proxy
+
+*Not custom model training — prompted multimodal LLM (Large Language Model).*
+
+**4-min video script + diagram:** [docs/VIDEO_DEMO_RUBRIC.md](docs/VIDEO_DEMO_RUBRIC.md)
+
+### Q3 — Use cases & impact
+
+| Who | Use |
+|-----|-----|
+| Students | Check homework before class; ask “why is this wrong?” without full solutions |
+| TAs / tutors | First pass on handwritten drafts in office hours |
+| Step-heavy courses | Algebra, calculus, linear algebra |
+
+**Impact:** faster formative feedback loops; scales routine mistake detection beyond 1:1 tutoring.
+
+### Q4 — Roadmap
+
+- Teacher rubrics and assignment templates  
+- Stronger handwriting OCR  
+- Confidence scores + human escalation  
+- Classroom analytics; on-device analysis for privacy-sensitive schools  
+
+---
+
+## Demo flow (live recording)
+
+1. Open [?demo=1](https://sfjc.dev/veridian?demo=1) — problem + context pre-filled  
+2. Draw `2x + 5 = 13`, then an intentional balance error  
+3. **Analyze work** → dots + LaTeX  
+4. **Explain this mistake** in chat → Socratic reply (no spoiler answer)
+
+**Canvas shortcuts:** ← pen · → eraser · Shift+move draw/erase · ⌘Z / ⌘⇧Z / ⌘Y undo/redo
+
+---
+
+## Quick start
 
 ```bash
-npm install
-cp .env.example .env.local
-npm run dev
+npm install && cp .env.example .env.local
+# set OPENROUTER_API_KEY
+npm run dev   # http://localhost:3000/veridian
 ```
 
-Visit `http://localhost:3000`.
+| Script | Purpose |
+|--------|---------|
+| `npm run build` / `lint` / `type-check` | CI checks |
+| `npm run test:e2e` | Playwright (local) |
+| `npm run smoke:deploy` | Prod health + API contracts |
+| `npm run test:e2e:deployment` | Playwright vs prod |
 
-Live AI requires:
+**Deploy:** Vercel project `veridian-whiteboard` → `vercel --prod` → `npm run smoke:deploy`. Details: [WORKING.md](WORKING.md) · [REMOTES.md](REMOTES.md)
 
-- `OPENROUTER_API_KEY` (covers OCR, analysis, coordinates, and chat)
+---
 
-Optional legacy: `OPENAI_API_KEY` for OpenAI-only OCR if OpenRouter is unset.
+## Layout
 
-## Deploy (Vercel)
-
-Standalone project on [sfjc.dev](https://sfjc.dev) — **not** the Jon-fun game hub.
-
-- **Primary URL:** [sfjc.dev/veridian](https://sfjc.dev/veridian) — proxied by the Jon-fun Vercel project (no extra DNS)
-- **Direct origin:** [veridian-whiteboard.vercel.app/veridian](https://veridian-whiteboard.vercel.app/veridian)
-- **Vercel project:** `veridian-whiteboard` (team `sfjchen-projects`)
-- **GitHub:** `sfjchen/veridian-whiteboard`
-
-```bash
-npm run build
-vercel link --project veridian-whiteboard
-vercel env pull .env.local   # optional — sync prod secrets locally
-vercel --prod
-npm run smoke:deploy         # verify sfjc.dev/veridian after every deploy
+```
+src/components/whiteboard/   InkCanvas, ChatPanel, MistakeOverlay
+src/app/api/                 analyze, chat, health
+src/lib/server/ai.ts         OpenRouter (OCR + analysis + chat)
+src/lib/whiteboard/          capture, types, localStorage
 ```
 
-**Agents must deploy** after user-facing changes — push to `origin main`, then `vercel --prod`, then smoke. See [WORKING.md](WORKING.md).
-
-Set on Vercel (Production + Preview): `OPENROUTER_API_KEY`, `OPENROUTER_SITE_URL=https://sfjc.dev/veridian`, model overrides as needed. Never commit secrets.
-
-Jon-fun `next.config.mjs` rewrites `/veridian` → this app (`VERIDIAN_ORIGIN`, default `https://veridian-whiteboard.vercel.app`). This app uses `basePath: '/veridian'` so assets and API routes work under the path.
-
-## Structure
-
-- `src/app/page.tsx` — single whiteboard route
-- `src/components/whiteboard/` — canvas, overlay, chat, page app
-- `src/app/api/analyze/route.ts` — analysis endpoint
-- `src/app/api/chat/route.ts` — chat endpoint
-- `src/app/api/health/route.ts` — health check
-- `src/lib/server/ai.ts` — server-only AI calls
-- `src/lib/whiteboard/` — types, capture, local storage
-
-## Scripts
-
-- `npm run dev` — start Next.js
-- `npm run build` — production build
-- `npm run lint` — ESLint
-- `npm run type-check` — TypeScript
-- `npm run smoke:api` — verify route contracts on prod (default `sfjc.dev/veridian`)
-- `npm run smoke:api:local` — same checks against local dev server
-- `npm run smoke:deploy` — verify production deployment (default URL above)
-- `npm run smoke:deploy:live` — production smoke plus one live chat call
-- `npm run test:e2e:deployment` — Playwright against production (no local dev server)
+---
 
 ## Changelog
 
 **2026-06**
 
-- Canvas keyboard shortcuts from original Veridian org: ← pen, → eraser, Shift+move draw/erase without click, ⌘Z/⌘⇧Z/⌘Y undo/redo; hint under toolbar.
-- Documented **always deploy** agent workflow (`WORKING.md`, `REMOTES.md`, README) — push → `vercel --prod` → `npm run smoke:deploy`.
-- Added [docs/VIDEO_DEMO_RUBRIC.md](docs/VIDEO_DEMO_RUBRIC.md) (Q1–Q4 alignment, [2] Application/Product), `?demo=1` banner with seeded reference/context, and **Analyze work** CTA for grading videos.
-- Restyled UI to match original Veridian org design: DM Sans + Dancing Script wordmark, green primary palette, forest backdrop, white cards — removed Jon-fun notebook/ink aesthetic.
-- Strengthened API request validation so malformed analyze/chat requests return `400` before AI-key checks, and expanded Playwright coverage for exact validation errors plus mistake-hint chat handoff.
-- Added production deploy smoke (`npm run smoke:deploy`) and Playwright deployment spec (`npm run test:e2e:deployment`) against `veridian-whiteboard.vercel.app`.
-- Switched OCR to OpenRouter Gemini when `OPENROUTER_API_KEY` is set (single-key deploy). Vercel project `veridian-whiteboard` live at [sfjc.dev/veridian](https://sfjc.dev/veridian) via Jon-fun path proxy.
-- Refactored from the original teacher/student EdTech platform into a clean Next.js App Router whiteboard app. Kept the core canvas → OCR → mistake analysis → coordinate overlay → chat workflow, removed Supabase/auth/classroom/platform code for v1, and added local-first browser persistence.
+- README tightened to rubric Q1–Q4; full video script stays in `docs/VIDEO_DEMO_RUBRIC.md`.
+- Canvas shortcuts from original Veridian (←/→ tools, Shift+move, undo/redo).
+- Original org UI (DM Sans, green palette, forest backdrop); OpenRouter Gemini on Vercel at sfjc.dev/veridian.
+- Refactored from EdTech monorepo to solo Next.js whiteboard (no Supabase/auth in v1).
