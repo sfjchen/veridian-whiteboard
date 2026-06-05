@@ -1,4 +1,5 @@
-const baseUrl = process.env.SMOKE_BASE_URL ?? "http://localhost:3000/veridian";
+const baseUrl = process.env.SMOKE_BASE_URL
+  ?? (process.env.SMOKE_LOCAL === "1" ? "http://localhost:3000/veridian" : "https://sfjc.dev/veridian");
 
 async function main(): Promise<void> {
   const health = await fetch(`${baseUrl}/api/health`);
