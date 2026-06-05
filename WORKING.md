@@ -53,6 +53,20 @@ npm run test:e2e     # PLAYWRIGHT_WEB_PORT=3011 by default
 5. **Parent isolation** — nested repo must stay out of Jon-fun `npm run build` (parent excludes `Veridian/**`).
 6. **Secrets** — never PR/commit API keys or JWT material.
 7. **Remotes** — read `REMOTES.md` before any `git push`.
+8. **Always deploy** — after any user-facing whiteboard change: commit → push `origin main` → `vercel --prod` → `npm run smoke:deploy`. Do not leave rubric/UI/API fixes local-only.
+
+## Deploy (required after code changes)
+
+Canonical URL: [sfjc.dev/veridian](https://sfjc.dev/veridian). Agents must run this sequence when shipping:
+
+```bash
+cd Jon-fun/Veridian   # or path to this nested repo
+git add -A && git commit -m "…" && git push origin main
+vercel --prod
+npm run smoke:deploy  # optional: npm run smoke:deploy:live if AI routes changed
+```
+
+Vercel project: `veridian-whiteboard` (team `sfjchen-projects`). Jon-fun rewrite serves `/veridian` — no separate DNS step.
 
 ## Mistakes to avoid (from Jon-fun + this refactor)
 

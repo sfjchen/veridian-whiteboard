@@ -8,6 +8,13 @@ import { MistakeOverlay } from "@/components/whiteboard/MistakeOverlay";
 import { apiPath } from "@/lib/whiteboard/api-path";
 import { strokesToPngBlob } from "@/lib/whiteboard/capture";
 import { loadSnapshot, saveSnapshot } from "@/lib/whiteboard/storage";
+import {
+  DEMO_CONTEXT,
+  DEMO_PROBLEM_HINT,
+  DEMO_PROBLEM_TITLE,
+  DEMO_REFERENCE,
+  isVideoDemoMode,
+} from "@/lib/whiteboard/demo-mode";
 import type { AnalysisResult, ChatMessage, Mistake, Stroke } from "@/lib/whiteboard/types";
 
 const DEFAULT_REFERENCE = "Use valid algebra steps and preserve equality on both sides.";
@@ -59,11 +66,20 @@ export function WhiteboardApp() {
   const [analyzing, setAnalyzing] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const videoDemo = isVideoDemoMode();
 
   useEffect(() => {
     const snapshot = loadSnapshot();
     const id = window.setTimeout(() => {
-      if (snapshot) {
+      if (videoDemo) {
+        setReferenceTex(DEMO_REFERENCE);
+        setContextTex(DEMO_CONTEXT);
+        if (snapshot) {
+          setStrokes(Array.isArray(snapshot.strokes) ? snapshot.strokes : []);
+          setAnalysis(snapshot.analysis);
+          setMessages(Array.isArray(snapshot.chatMessages) ? snapshot.chatMessages : []);
+        }
+      } else if (snapshot) {
         setStrokes(Array.isArray(snapshot.strokes) ? snapshot.strokes : []);
         setAnalysis(snapshot.analysis);
         setMessages(Array.isArray(snapshot.chatMessages) ? snapshot.chatMessages : []);
@@ -73,7 +89,7 @@ export function WhiteboardApp() {
       setLoaded(true);
     }, 0);
     return () => window.clearTimeout(id);
-  }, []);
+  }, [videoDemo]);
 
   useEffect(() => {
     if (!loaded) return;
@@ -149,7 +165,13 @@ export function WhiteboardApp() {
       <main className="pageShell" data-testid="whiteboard-app">
         <header className="appHeader">
           <h1 className="wordmark">Veridian</h1>
-          <p className="tagline">Write your work, analyze mistakes, ask for hints.</p>
+          <p className="tagline">Local-first AI math whiteboard — write, analyze mistakes, ask for hints.</p>
+          {videoDemo && (
+            <div className="demoBanner" data-testid="video-demo-banner">
+              <strong>{DEMO_PROBLEM_TITLE}</strong>
+              <span>{DEMO_PROBLEM_HINT}</span>
+            </div>
+          )}
         </header>
 
         {analyzing && (
@@ -171,7 +193,7 @@ export function WhiteboardApp() {
             </InkCanvas>
             <div className="actionRow">
               <button className="primaryButton" data-testid="analyze-work" disabled={analyzing} onClick={analyze} type="button">
-                {analyzing ? "Analyzing…" : "Done"}
+                {analyzing ? "Analyzing…" : "Analyze work"}
               </button>
               <span data-testid="analysis-status">{analysisText}</span>
             </div>

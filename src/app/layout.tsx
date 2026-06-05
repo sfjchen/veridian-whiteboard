@@ -14,8 +14,8 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Veridian",
-  description: "AI math whiteboard — write, analyze mistakes, ask for hints.",
+  title: "Veridian Whiteboard",
+  description: "Local-first AI math whiteboard — write, analyze mistakes, ask for hints.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

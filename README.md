@@ -6,6 +6,14 @@ Solo local-first AI math whiteboard. Standalone Next.js app — separate from th
 
 **Repo:** [github.com/sfjchen/veridian-whiteboard](https://github.com/sfjchen/veridian-whiteboard) · **Agent standards:** [WORKING.md](WORKING.md) · **Remotes:** [REMOTES.md](REMOTES.md)
 
+## Video demo (grading rubric)
+
+**Domain:** [2] Application / Product — deployed multimodal pipeline, not custom model training.
+
+Full Q1–Q4 talking points, architecture diagram, and 4-minute shot list: **[docs/VIDEO_DEMO_RUBRIC.md](docs/VIDEO_DEMO_RUBRIC.md)**
+
+Repeatable live demo URL: [sfjc.dev/veridian?demo=1](https://sfjc.dev/veridian?demo=1) (pre-fills problem + Socratic context).
+
 ## Scope
 
 - Write math on a web whiteboard.
@@ -45,7 +53,10 @@ npm run build
 vercel link --project veridian-whiteboard
 vercel env pull .env.local   # optional — sync prod secrets locally
 vercel --prod
+npm run smoke:deploy         # verify sfjc.dev/veridian after every deploy
 ```
+
+**Agents must deploy** after user-facing changes — push to `origin main`, then `vercel --prod`, then smoke. See [WORKING.md](WORKING.md).
 
 Set on Vercel (Production + Preview): `OPENROUTER_API_KEY`, `OPENROUTER_SITE_URL=https://sfjc.dev/veridian`, model overrides as needed. Never commit secrets.
 
@@ -76,6 +87,7 @@ Jon-fun `next.config.mjs` rewrites `/veridian` → this app (`VERIDIAN_ORIGIN`, 
 
 **2026-06**
 
+- Added [docs/VIDEO_DEMO_RUBRIC.md](docs/VIDEO_DEMO_RUBRIC.md) (Q1–Q4 alignment, [2] Application/Product), `?demo=1` banner with seeded reference/context, and **Analyze work** CTA for grading videos.
 - Restyled UI to match original Veridian org design: DM Sans + Dancing Script wordmark, green primary palette, forest backdrop, white cards — removed Jon-fun notebook/ink aesthetic.
 - Strengthened API request validation so malformed analyze/chat requests return `400` before AI-key checks, and expanded Playwright coverage for exact validation errors plus mistake-hint chat handoff.
 - Added production deploy smoke (`npm run smoke:deploy`) and Playwright deployment spec (`npm run test:e2e:deployment`) against `veridian-whiteboard.vercel.app`.

@@ -22,6 +22,8 @@ Verify: `git remote -v`
 - **Vercel origin:** project `veridian-whiteboard` → `veridian-whiteboard.vercel.app/veridian`
 - **No Render, no Supabase, no subdomain DNS** for whiteboard v1 — all AI runs on Vercel serverless routes
 
+**Agents: always deploy** after pushing whiteboard changes — `vercel --prod` then `npm run smoke:deploy`. See [WORKING.md](WORKING.md) § Deploy.
+
 ## EdTech work (legacy, separate repo)
 
 Use `/Users/jchen04mac/Desktop/Veridian/` — not this folder.

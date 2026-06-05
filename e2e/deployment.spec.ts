@@ -7,6 +7,13 @@ test.describe("production deployment", () => {
     await page.goto("/veridian");
     await expect(page.getByTestId("whiteboard-app")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Veridian" })).toBeVisible();
+    await expect(page.getByTestId("analyze-work")).toHaveText("Analyze work");
+  });
+
+  test("demo mode shows video banner", async ({ page }) => {
+    await page.goto("/veridian?demo=1");
+    await expect(page.getByTestId("video-demo-banner")).toBeVisible();
+    await expect(page.getByTestId("reference-tex")).toContainText("2x + 5 = 13");
   });
 
   test("API routes validate bad requests", async ({ request }) => {

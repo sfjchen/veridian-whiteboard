@@ -142,6 +142,25 @@ pre {
   font-size: 15px;
 }
 
+.demoBanner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 42rem;
+  margin: 0.75rem auto 0;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--v-primary) 35%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--v-surface) 92%, var(--v-primary) 8%);
+  color: var(--v-text);
+  font-size: 14px;
+  text-align: left;
+}
+
+.demoBanner strong {
+  color: var(--v-primary);
+}
+
 .workspaceGrid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
