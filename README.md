@@ -87,6 +87,7 @@ Jon-fun `next.config.mjs` rewrites `/veridian` → this app (`VERIDIAN_ORIGIN`, 
 
 **2026-06**
 
+- Documented **always deploy** agent workflow (`WORKING.md`, `REMOTES.md`, README) — push → `vercel --prod` → `npm run smoke:deploy`.
 - Added [docs/VIDEO_DEMO_RUBRIC.md](docs/VIDEO_DEMO_RUBRIC.md) (Q1–Q4 alignment, [2] Application/Product), `?demo=1` banner with seeded reference/context, and **Analyze work** CTA for grading videos.
 - Restyled UI to match original Veridian org design: DM Sans + Dancing Script wordmark, green primary palette, forest backdrop, white cards — removed Jon-fun notebook/ink aesthetic.
 - Strengthened API request validation so malformed analyze/chat requests return `400` before AI-key checks, and expanded Playwright coverage for exact validation errors plus mistake-hint chat handoff.
