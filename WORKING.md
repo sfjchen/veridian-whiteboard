@@ -76,7 +76,7 @@ Vercel project: `veridian-whiteboard` (team `sfjchen-projects`). Jon-fun rewrite
 | Pushing whiteboard to `sfjchen/Veridian` | Use a dedicated remote (see `REMOTES.md`) |
 | Mixing Supabase projects | Whiteboard has no DB; EdTech uses `tpqasmpieyteutvdntda`; Jon-fun uses `nzviiorrlsdtwzvzodpg` |
 | `webServer: condition ? undefined : {...}` with `exactOptionalPropertyTypes` | Use `...(skip ? {} : { webServer: {...} })` |
-| `Port clash with Jon-fun | Run one dev server at a time, or whiteboard on another port |
+| Port clash with Jon-fun | Run one dev server at a time, or whiteboard on another port |
 | Missing canvas shortcuts | ←/→ tools, Shift+move draw/erase, ⌘Z/⌘Y — see `InkCanvas.tsx` + `ShortcutHint.tsx` |
 
 ## Reference (parent repo)
