@@ -1,0 +1,274 @@
+:root {
+  --ink-bg: #fcf9f4;
+  --ink-paper: #faf6f0;
+  --ink-text: #1a1a1a;
+  --ink-muted: #6b6359;
+  --ink-accent: #8c3838;
+  --ink-border: #eee9e2;
+  --ink-error: #b42318;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 28px,
+      rgba(140, 56, 56, 0.08) 29px,
+      transparent 30px
+    ),
+    var(--ink-bg);
+  color: var(--ink-text);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+button {
+  min-height: 44px;
+  border: 1px solid var(--ink-border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ink-text);
+  cursor: pointer;
+  padding: 0.6rem 0.85rem;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+button.active,
+.primaryButton {
+  border-color: var(--ink-accent);
+  background: var(--ink-accent);
+  color: white;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--ink-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--ink-text);
+  padding: 0.75rem;
+}
+
+label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--ink-muted);
+}
+
+pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+  padding: 0.75rem;
+}
+
+.pageShell {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.hero {
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  max-width: 760px;
+  margin: 0.15rem 0 0.5rem;
+  font-size: clamp(2.1rem, 6vw, 4.4rem);
+  line-height: 0.95;
+}
+
+.hero p {
+  max-width: 720px;
+  color: var(--ink-muted);
+  font-size: 1.1rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--ink-accent);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.workspaceGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 1rem;
+  align-items: start;
+}
+
+.whiteboardColumn,
+.sidePanel,
+.chatPanel {
+  display: grid;
+  gap: 1rem;
+}
+
+.canvasPanel,
+.card,
+.chatPanel {
+  border: 1px solid var(--ink-border);
+  border-radius: 20px;
+  background: rgba(250, 246, 240, 0.82);
+  padding: 1rem;
+}
+
+.canvasToolbar,
+.actionRow,
+.quickActions,
+.chatInput {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.canvasSurface {
+  position: relative;
+  min-height: min(62dvh, 640px);
+  margin-top: 0.75rem;
+  overflow: hidden;
+  border: 1px solid var(--ink-border);
+  border-radius: 16px;
+  background: white;
+  color: #111827;
+  touch-action: none;
+}
+
+.canvasSurface.pen {
+  cursor: crosshair;
+}
+
+.canvasSurface.eraser {
+  cursor: cell;
+}
+
+.inkSvg,
+.mistakeOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mistakeOverlay {
+  pointer-events: none;
+}
+
+.mistakeDotWrap {
+  position: absolute;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.mistakeDot {
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  min-height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink-error);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.mistakeBubble {
+  position: absolute;
+  left: -80px;
+  bottom: 24px;
+  width: 220px;
+  border-radius: 14px;
+  background: rgba(26, 26, 26, 0.94);
+  color: white;
+  padding: 0.75rem;
+}
+
+.mistakeBubble p {
+  margin: 0.35rem 0;
+}
+
+.mistakeBubble button {
+  min-height: 36px;
+  border-color: rgba(255, 255, 255, 0.25);
+  color: white;
+}
+
+.sidePanel .card {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.muted,
+.emptyChat {
+  color: var(--ink-muted);
+}
+
+.errorText {
+  color: var(--ink-error);
+}
+
+.chatPanel {
+  margin-top: 1rem;
+}
+
+.messages {
+  display: grid;
+  max-height: 320px;
+  overflow-y: auto;
+  gap: 0.65rem;
+}
+
+.message {
+  max-width: 78ch;
+  border-radius: 14px;
+  padding: 0.75rem;
+}
+
+.message.student {
+  justify-self: end;
+  background: var(--ink-accent);
+  color: white;
+}
+
+.message.assistant {
+  justify-self: start;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.chatInput {
+  align-items: end;
+}
+
+.chatInput textarea {
+  flex: 1 1 280px;
+}
+
+@media (max-width: 900px) {
+  .workspaceGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .canvasSurface {
+    min-height: 54dvh;
+  }
+}
