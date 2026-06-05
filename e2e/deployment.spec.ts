@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "https://veridian-whiteboard.vercel.app";
+const baseURL = (process.env.PLAYWRIGHT_BASE_URL ?? "https://sfjc.dev/veridian/").replace(/\/?$/, "/");
 
 test.describe("production deployment", () => {
   test.use({ baseURL });
@@ -12,14 +12,14 @@ test.describe("production deployment", () => {
   });
 
   test("API routes validate bad requests", async ({ request }) => {
-    const health = await request.get("/api/health");
+    const health = await request.get("api/health");
     await expect(health).toBeOK();
     await expect(health.json()).resolves.toEqual({ status: "ok", app: "veridian-whiteboard" });
 
-    const chat = await request.post("/api/chat", { data: {} });
+    const chat = await request.post("api/chat", { data: {} });
     expect(chat.status()).toBe(400);
 
-    const analyze = await request.post("/api/analyze", { data: {} });
+    const analyze = await request.post("api/analyze", { data: {} });
     expect(analyze.status()).toBe(400);
   });
 });

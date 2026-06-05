@@ -137,22 +137,22 @@ test("surfaces analyze API configuration failures", async ({ page }) => {
 });
 
 test("API routes validate bad requests without AI keys", async ({ request }) => {
-  const health = await request.get("/api/health");
+  const health = await request.get("api/health");
   await expect(health).toBeOK();
 
-  const analyze = await request.post("/api/analyze", { multipart: {} });
+  const analyze = await request.post("api/analyze", { multipart: {} });
   expect(analyze.status()).toBe(400);
   await expect(analyze.json()).resolves.toEqual({ error: "image file is required." });
 
-  const analyzeJson = await request.post("/api/analyze", { data: {} });
+  const analyzeJson = await request.post("api/analyze", { data: {} });
   expect(analyzeJson.status()).toBe(400);
   await expect(analyzeJson.json()).resolves.toEqual({ error: "multipart form data is required." });
 
-  const chat = await request.post("/api/chat", { data: {} });
+  const chat = await request.post("api/chat", { data: {} });
   expect(chat.status()).toBe(400);
   await expect(chat.json()).resolves.toEqual({ error: "message is required." });
 
-  const malformedChat = await request.post("/api/chat", {
+  const malformedChat = await request.post("api/chat", {
     data: Buffer.from("{"),
     headers: { "Content-Type": "application/json" },
   });
