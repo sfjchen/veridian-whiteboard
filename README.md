@@ -2,7 +2,7 @@
 
 Solo local-first AI math whiteboard. Standalone Next.js app — separate from the [Jon-fun](https://sfjc.dev) game hub.
 
-**Live:** [veridian-whiteboard.vercel.app](https://veridian-whiteboard.vercel.app) · **Custom domain (pending DNS):** [veridian.sfjc.dev](https://veridian.sfjc.dev)
+**Live:** [sfjc.dev/veridian](https://sfjc.dev/veridian) (proxied from main game hub — same pattern as other projects) · Direct: [veridian-whiteboard.vercel.app/veridian](https://veridian-whiteboard.vercel.app/veridian)
 
 **Repo:** [github.com/sfjchen/veridian-whiteboard](https://github.com/sfjchen/veridian-whiteboard) · **Agent standards:** [WORKING.md](WORKING.md) · **Remotes:** [REMOTES.md](REMOTES.md)
 
@@ -35,8 +35,8 @@ Optional legacy: `OPENAI_API_KEY` for OpenAI-only OCR if OpenRouter is unset.
 
 Standalone project on [sfjc.dev](https://sfjc.dev) — **not** the Jon-fun game hub.
 
-- **Production URL:** [veridian-whiteboard.vercel.app](https://veridian-whiteboard.vercel.app)
-- **Custom domain (after Cloudflare DNS):** `https://veridian.sfjc.dev`
+- **Primary URL:** [sfjc.dev/veridian](https://sfjc.dev/veridian) — proxied by the Jon-fun Vercel project (no extra DNS)
+- **Direct origin:** [veridian-whiteboard.vercel.app/veridian](https://veridian-whiteboard.vercel.app/veridian)
 - **Vercel project:** `veridian-whiteboard` (team `sfjchen-projects`)
 - **GitHub:** `sfjchen/veridian-whiteboard`
 
@@ -47,15 +47,9 @@ vercel env pull .env.local   # optional — sync prod secrets locally
 vercel --prod
 ```
 
-Set on Vercel (Production + Preview): `OPENROUTER_API_KEY`, `OPENROUTER_SITE_URL=https://veridian.sfjc.dev`, model overrides as needed. Never commit secrets.
+Set on Vercel (Production + Preview): `OPENROUTER_API_KEY`, `OPENROUTER_SITE_URL=https://sfjc.dev/veridian`, model overrides as needed. Never commit secrets.
 
-**Custom domain (`veridian.sfjc.dev`):** `sfjc.dev` DNS is on Cloudflare. Add one record in Cloudflare → DNS:
-
-| Type | Name | Value | Proxy |
-|------|------|-------|-------|
-| `A` | `veridian` | `76.76.21.21` | DNS only (grey cloud) recommended |
-
-Or `CNAME` `veridian` → `cname.vercel-dns.com`. Vercel verifies automatically after propagation.
+Jon-fun `next.config.mjs` rewrites `/veridian` → this app (`VERIDIAN_ORIGIN`, default `https://veridian-whiteboard.vercel.app`). This app uses `basePath: '/veridian'` so assets and API routes work under the path.
 
 ## Structure
 

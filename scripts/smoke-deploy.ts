@@ -1,4 +1,4 @@
-const baseUrl = process.env.SMOKE_BASE_URL ?? "https://veridian-whiteboard.vercel.app";
+const baseUrl = process.env.SMOKE_BASE_URL ?? "https://sfjc.dev/veridian";
 const liveAi = process.env.SMOKE_LIVE_AI === "1";
 
 async function expectStatus(path: string, init: RequestInit, status: number): Promise<void> {
