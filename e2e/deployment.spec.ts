@@ -6,7 +6,7 @@ test.describe("production deployment", () => {
   test("loads whiteboard shell", async ({ page }) => {
     await page.goto("/veridian");
     await expect(page.getByTestId("whiteboard-app")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Local-first AI math whiteboard" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Veridian" })).toBeVisible();
   });
 
   test("API routes validate bad requests", async ({ request }) => {
