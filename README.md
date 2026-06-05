@@ -46,6 +46,14 @@ vercel --prod
 
 Set on Vercel (Production + Preview): `OPENROUTER_API_KEY`, `OPENROUTER_SITE_URL=https://veridian.sfjc.dev`, model overrides as needed. Never commit secrets.
 
+**Custom domain (`veridian.sfjc.dev`):** `sfjc.dev` DNS is on Cloudflare. Add one record in Cloudflare → DNS:
+
+| Type | Name | Value | Proxy |
+|------|------|-------|-------|
+| `A` | `veridian` | `76.76.21.21` | DNS only (grey cloud) recommended |
+
+Or `CNAME` `veridian` → `cname.vercel-dns.com`. Vercel verifies automatically after propagation.
+
 ## Structure
 
 - `src/app/page.tsx` — single whiteboard route
