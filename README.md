@@ -76,6 +76,7 @@ Jon-fun `next.config.mjs` rewrites `/veridian` → this app (`VERIDIAN_ORIGIN`, 
 
 **2026-06**
 
+- Restyled UI to match original Veridian org design: DM Sans + Dancing Script wordmark, green primary palette, forest backdrop, white cards — removed Jon-fun notebook/ink aesthetic.
 - Strengthened API request validation so malformed analyze/chat requests return `400` before AI-key checks, and expanded Playwright coverage for exact validation errors plus mistake-hint chat handoff.
 - Added production deploy smoke (`npm run smoke:deploy`) and Playwright deployment spec (`npm run test:e2e:deployment`) against `veridian-whiteboard.vercel.app`.
 - Switched OCR to OpenRouter Gemini when `OPENROUTER_API_KEY` is set (single-key deploy). Vercel project `veridian-whiteboard` live at [veridian-whiteboard.vercel.app](https://veridian-whiteboard.vercel.app); custom domain `veridian.sfjc.dev` pending Cloudflare DNS.

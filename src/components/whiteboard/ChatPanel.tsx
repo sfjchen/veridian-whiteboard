@@ -11,7 +11,7 @@ type ChatPanelProps = {
 };
 
 const QUICK_ACTIONS = [
-  "Explain the biggest mistake",
+  "Explain this mistake",
   "Give me a hint",
   "What should I try next?",
 ];
@@ -28,11 +28,8 @@ export function ChatPanel({ messages, loading, error, onSend }: ChatPanelProps) 
 
   return (
     <aside className="chatPanel" aria-label="Socratic chat">
-      <header>
-        <div>
-          <p className="eyebrow">Tutor</p>
-          <h2>Ask about your work</h2>
-        </div>
+      <header className="chatHeader">
+        <h2>Ask about your work</h2>
       </header>
       <div className="quickActions">
         {QUICK_ACTIONS.map((action) => (
@@ -51,7 +48,7 @@ export function ChatPanel({ messages, loading, error, onSend }: ChatPanelProps) 
             </div>
           ))
         )}
-        {loading && <p className="emptyChat">Thinking...</p>}
+        {loading && <p className="emptyChat">Thinking…</p>}
       </div>
       {error && <p className="errorText">{error}</p>}
       <div className="chatInput">
@@ -64,7 +61,7 @@ export function ChatPanel({ messages, loading, error, onSend }: ChatPanelProps) 
               send();
             }
           }}
-          placeholder="Ask for a small hint..."
+          placeholder="Type a message…"
           rows={3}
         />
         <button disabled={!draft.trim() || loading} onClick={send} type="button">Send</button>

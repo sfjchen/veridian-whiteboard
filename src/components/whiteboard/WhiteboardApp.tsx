@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChatPanel } from "@/components/whiteboard/ChatPanel";
+import { ForestBackground } from "@/components/whiteboard/ForestBackground";
 import { InkCanvas } from "@/components/whiteboard/InkCanvas";
 import { MistakeOverlay } from "@/components/whiteboard/MistakeOverlay";
+import { apiPath } from "@/lib/whiteboard/api-path";
 import { strokesToPngBlob } from "@/lib/whiteboard/capture";
 import { loadSnapshot, saveSnapshot } from "@/lib/whiteboard/storage";
 import type { AnalysisResult, ChatMessage, Mistake, Stroke } from "@/lib/whiteboard/types";
@@ -98,7 +100,7 @@ export function WhiteboardApp() {
       form.append("reference_tex", referenceTex);
       form.append("context_tex", contextTex);
       form.append("include_solution", "true");
-      const response = await fetch("/api/analyze", { method: "POST", body: form });
+      const response = await fetch(apiPath("/api/analyze"), { method: "POST", body: form });
       const payload = await response.json() as ApiAnalysisResult;
       if (!response.ok) throw new Error(payload.error || `Analysis failed (${response.status}).`);
       setAnalysis(payload);
@@ -116,7 +118,7 @@ export function WhiteboardApp() {
     setChatLoading(true);
     setChatError(null);
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch(apiPath("/api/chat"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -142,64 +144,70 @@ export function WhiteboardApp() {
   }, [sendMessage]);
 
   return (
-    <main className="pageShell" data-testid="whiteboard-app">
-      <section className="hero">
-        <p className="eyebrow">Veridian Whiteboard</p>
-        <h1>Local-first AI math whiteboard</h1>
-        <p>
-          Write math, run analysis, then ask for a small hint. No classroom, account, or database is needed for this first pass.
-        </p>
-      </section>
+    <div className="veridianApp">
+      <ForestBackground />
+      <main className="pageShell" data-testid="whiteboard-app">
+        <header className="appHeader">
+          <h1 className="wordmark">Veridian</h1>
+          <p className="tagline">Write your work, analyze mistakes, ask for hints.</p>
+        </header>
 
-      <section className="workspaceGrid">
-        <div className="whiteboardColumn">
-          <InkCanvas strokes={strokes} onStrokesChange={setStrokes} onLayout={setCanvasSize}>
-            {analysis && (
-              <MistakeOverlay
-                mistakes={analysis.mistakes}
-                canvasSize={canvasSize}
-                onAsk={askAboutMistake}
-              />
-            )}
-          </InkCanvas>
-          <div className="actionRow">
-            <button className="primaryButton" data-testid="analyze-work" disabled={analyzing} onClick={analyze} type="button">
-              {analyzing ? "Analyzing..." : "Analyze work"}
-            </button>
-            <span data-testid="analysis-status">{analysisText}</span>
+        {analyzing && (
+          <div className="analyzingBar" role="status">
+            Analyzing your work…
           </div>
-          {analysisError && <p className="errorText">{analysisError}</p>}
-        </div>
+        )}
 
-        <aside className="sidePanel">
-          <section className="card">
-            <p className="eyebrow">Context</p>
-            <label>
-              Reference / grading note
-              <textarea data-testid="reference-tex" value={referenceTex} onChange={(event) => setReferenceTex(event.target.value)} rows={4} />
-            </label>
-            <label>
-              Tutor behavior
-              <textarea data-testid="context-tex" value={contextTex} onChange={(event) => setContextTex(event.target.value)} rows={4} />
-            </label>
-          </section>
+        <section className="workspaceGrid">
+          <div className="whiteboardColumn">
+            <InkCanvas strokes={strokes} onStrokesChange={setStrokes} onLayout={setCanvasSize}>
+              {analysis && (
+                <MistakeOverlay
+                  mistakes={analysis.mistakes}
+                  canvasSize={canvasSize}
+                  onAsk={askAboutMistake}
+                />
+              )}
+            </InkCanvas>
+            <div className="actionRow">
+              <button className="primaryButton" data-testid="analyze-work" disabled={analyzing} onClick={analyze} type="button">
+                {analyzing ? "Analyzing…" : "Done"}
+              </button>
+              <span data-testid="analysis-status">{analysisText}</span>
+            </div>
+            {analysisError && <p className="errorText">{analysisError}</p>}
+          </div>
 
-          <section className="card">
-            <p className="eyebrow">Latest analysis</p>
-            {analysis ? (
-              <>
-                <p>{analysisText}</p>
-                <pre>{analysis.studentTex}</pre>
-                {analysis.continuationTex && <p className="muted">Next step: {analysis.continuationTex}</p>}
-              </>
-            ) : (
-              <p className="muted">Analysis results will appear here.</p>
-            )}
-          </section>
-        </aside>
-      </section>
+          <aside className="sidePanel">
+            <section className="card">
+              <p className="cardTitle">Context</p>
+              <label>
+                Reference / grading note
+                <textarea data-testid="reference-tex" value={referenceTex} onChange={(event) => setReferenceTex(event.target.value)} rows={4} />
+              </label>
+              <label>
+                Tutor behavior
+                <textarea data-testid="context-tex" value={contextTex} onChange={(event) => setContextTex(event.target.value)} rows={4} />
+              </label>
+            </section>
 
-      <ChatPanel messages={messages} loading={chatLoading} error={chatError} onSend={sendMessage} />
-    </main>
+            <section className="card">
+              <p className="cardTitle">Latest analysis</p>
+              {analysis ? (
+                <>
+                  <p>{analysisText}</p>
+                  <pre>{analysis.studentTex}</pre>
+                  {analysis.continuationTex && <p className="muted">Next step: {analysis.continuationTex}</p>}
+                </>
+              ) : (
+                <p className="muted">Analysis results will appear here.</p>
+              )}
+            </section>
+          </aside>
+        </section>
+
+        <ChatPanel messages={messages} loading={chatLoading} error={chatError} onSend={sendMessage} />
+      </main>
+    </div>
   );
 }

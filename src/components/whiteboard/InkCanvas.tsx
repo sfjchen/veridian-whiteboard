@@ -174,11 +174,11 @@ export function InkCanvas({ strokes, onStrokesChange, onLayout, children }: InkC
   return (
     <section className="canvasPanel">
       <div className="canvasToolbar" aria-label="Whiteboard toolbar">
-        <button className={tool === "pen" ? "active" : ""} onClick={() => setTool("pen")} type="button">Pen</button>
-        <button className={tool === "eraser" ? "active" : ""} onClick={() => setTool("eraser")} type="button">Eraser</button>
-        <button disabled={!canUndo} onClick={undo} type="button">Undo</button>
-        <button disabled={!canRedo} onClick={redoStroke} type="button">Redo</button>
-        <button onClick={clear} type="button">Clear</button>
+        <button className={`toolBtn ${tool === "pen" ? "active" : ""}`} onClick={() => setTool("pen")} type="button" aria-label="Pen tool">Pen</button>
+        <button className={`toolBtn ${tool === "eraser" ? "active" : ""}`} onClick={() => setTool("eraser")} type="button" aria-label="Eraser tool">Eraser</button>
+        <button className="toolBtn" disabled={!canUndo} onClick={undo} type="button" aria-label="Undo">Undo</button>
+        <button className="toolBtn" disabled={!canRedo} onClick={redoStroke} type="button" aria-label="Redo">Redo</button>
+        <button className="toolBtn clearBtn" onClick={clear} type="button" aria-label="Clear canvas">Clear</button>
       </div>
       <div
         ref={wrapRef}

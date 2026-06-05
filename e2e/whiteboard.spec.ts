@@ -17,9 +17,9 @@ test.beforeEach(async ({ page }) => {
   await page.reload();
 });
 
-test("renders the local-first whiteboard shell", async ({ page }) => {
+test("renders the Veridian whiteboard shell", async ({ page }) => {
   await expect(page.getByTestId("whiteboard-app")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Local-first AI math whiteboard" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Veridian" })).toBeVisible();
   await expect(page.getByTestId("whiteboard-canvas")).toBeVisible();
   await expect(page.getByTestId("analysis-status")).toHaveText("No analysis yet.");
 });

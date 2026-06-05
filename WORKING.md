@@ -2,12 +2,14 @@
 
 Mirrors Jon-fun agent standards. **Scope:** local-first Next.js whiteboard only — not EdTech, not Jon-fun games.
 
+**Canonical public URL:** [https://sfjc.dev/veridian](https://sfjc.dev/veridian) — not `www.veridian.fyi/document/default-algebra` (legacy Expo on Desktop/Veridian).
+
 ## Product principles (from Jon-fun)
 
 - **Audience:** Personal / small-group use; low cognitive load; no growth funnels.
 - **Local-first:** Drawing, analysis snapshot, chat history in browser storage; works offline for drawing; AI routes need keys.
 - **No mandatory accounts** in v1.
-- **Direct UI:** Every control earns its place; notebook cream + burgundy accent (`src/app/globals.css`).
+- **Direct UI:** Every control earns its place; original Veridian org design — DM Sans, green primary, forest backdrop (`src/app/globals.css`).
 
 ## Tech stack
 

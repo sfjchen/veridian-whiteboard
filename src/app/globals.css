@@ -1,11 +1,26 @@
 :root {
-  --ink-bg: #fcf9f4;
-  --ink-paper: #faf6f0;
-  --ink-text: #1a1a1a;
-  --ink-muted: #6b6359;
-  --ink-accent: #8c3838;
-  --ink-border: #eee9e2;
-  --ink-error: #b42318;
+  --v-primary: #16a34a;
+  --v-primary-muted: #ecfdf5;
+  --v-surface: #f3f4f6;
+  --v-card: #ffffff;
+  --v-border: #e5e7eb;
+  --v-border-strong: #d1d5db;
+  --v-text: #111827;
+  --v-text-secondary: #374151;
+  --v-text-muted: #6b7280;
+  --v-text-disabled: #9ca3af;
+  --v-ink: #111827;
+  --v-error: #dc2626;
+  --v-error-bg: #fef2f2;
+  --v-tool-active-bg: #eaf0ff;
+  --v-tool-active-border: #c9d7ff;
+  --v-tool-active-icon: #2f5fd6;
+  --v-radius-card: 12px;
+  --v-radius-button: 10px;
+  --v-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --v-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --font-sans: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+  --font-wordmark: var(--font-dancing), cursive;
 }
 
 * {
@@ -14,17 +29,11 @@
 
 body {
   margin: 0;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 28px,
-      rgba(140, 56, 56, 0.08) 29px,
-      transparent 30px
-    ),
-    var(--ink-bg);
-  color: var(--ink-text);
-  font-family: Georgia, "Times New Roman", serif;
+  color: var(--v-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  background: var(--v-surface);
 }
 
 button,
@@ -34,123 +43,188 @@ textarea {
 
 button {
   min-height: 44px;
-  border: 1px solid var(--ink-border);
-  border-radius: 12px;
-  background: transparent;
-  color: var(--ink-text);
+  border: 1px solid var(--v-border);
+  border-radius: var(--v-radius-button);
+  background: var(--v-card);
+  color: var(--v-text-secondary);
   cursor: pointer;
-  padding: 0.6rem 0.85rem;
+  padding: 0.55rem 0.85rem;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.45;
+  opacity: 0.5;
 }
 
-button.active,
-.primaryButton {
-  border-color: var(--ink-accent);
-  background: var(--ink-accent);
-  color: white;
+button.primaryButton {
+  border-color: var(--v-primary);
+  background: var(--v-primary);
+  color: #ffffff;
+}
+
+button.primaryButton:disabled {
+  opacity: 0.7;
 }
 
 textarea {
   width: 100%;
   resize: vertical;
-  border: 1px solid var(--ink-border);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.45);
-  color: var(--ink-text);
-  padding: 0.75rem;
+  border: 1px solid var(--v-border-strong);
+  border-radius: var(--v-radius-button);
+  background: var(--v-surface);
+  color: var(--v-text);
+  padding: 0.65rem 0.75rem;
+  font-size: 14px;
 }
 
 label {
   display: grid;
-  gap: 0.45rem;
-  color: var(--ink-muted);
+  gap: 0.4rem;
+  color: var(--v-text-muted);
+  font-size: 13px;
+  font-weight: 500;
 }
 
 pre {
   overflow-x: auto;
   white-space: pre-wrap;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.55);
+  border-radius: var(--v-radius-button);
+  background: var(--v-surface);
   padding: 0.75rem;
+  font-size: 13px;
+  margin: 0;
+}
+
+.forestBg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.forestSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.veridianApp {
+  position: relative;
+  min-height: 100dvh;
 }
 
 .pageShell {
+  position: relative;
+  z-index: 1;
   width: min(1280px, 100%);
   margin: 0 auto;
-  padding: 2rem 1rem 3rem;
+  padding: 1.25rem 1rem 2.5rem;
 }
 
-.hero {
-  margin-bottom: 1.5rem;
+.appHeader {
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
-.hero h1 {
-  max-width: 760px;
-  margin: 0.15rem 0 0.5rem;
-  font-size: clamp(2.1rem, 6vw, 4.4rem);
-  line-height: 0.95;
-}
-
-.hero p {
-  max-width: 720px;
-  color: var(--ink-muted);
-  font-size: 1.1rem;
-}
-
-.eyebrow {
+.wordmark {
   margin: 0;
-  color: var(--ink-accent);
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  color: var(--v-primary);
+  font-family: var(--font-wordmark);
+  font-size: clamp(2.4rem, 7vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.tagline {
+  margin: 0.25rem 0 0;
+  color: var(--v-text-muted);
+  font-size: 15px;
 }
 
 .workspaceGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  gap: 12px;
   align-items: start;
 }
 
 .whiteboardColumn,
-.sidePanel,
-.chatPanel {
+.sidePanel {
   display: grid;
-  gap: 1rem;
+  gap: 12px;
 }
 
 .canvasPanel,
 .card,
 .chatPanel {
-  border: 1px solid var(--ink-border);
-  border-radius: 20px;
-  background: rgba(250, 246, 240, 0.82);
-  padding: 1rem;
+  border: 1px solid var(--v-border);
+  border-radius: var(--v-radius-card);
+  background: var(--v-card);
+  box-shadow: var(--v-shadow-md);
 }
 
-.canvasToolbar,
-.actionRow,
-.quickActions,
-.chatInput {
+.canvasPanel {
+  padding: 12px;
+}
+
+.card,
+.chatPanel {
+  padding: 14px;
+}
+
+.cardTitle {
+  margin: 0 0 0.5rem;
+  color: var(--v-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.canvasToolbar {
   display: flex;
-  gap: 0.5rem;
+  gap: 10px;
   align-items: center;
   flex-wrap: wrap;
 }
 
+.toolBtn {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--v-surface);
+  border-color: var(--v-border);
+  color: var(--v-text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.toolBtn.active {
+  background: var(--v-tool-active-bg);
+  border-color: var(--v-tool-active-border);
+  color: var(--v-tool-active-icon);
+}
+
+.toolBtn.clearBtn {
+  margin-left: auto;
+  background: var(--v-card);
+  color: var(--v-text-secondary);
+  font-size: 13px;
+}
+
 .canvasSurface {
   position: relative;
-  min-height: min(62dvh, 640px);
-  margin-top: 0.75rem;
+  min-height: min(58dvh, 620px);
+  margin-top: 10px;
   overflow: hidden;
-  border: 1px solid var(--ink-border);
-  border-radius: 16px;
-  background: white;
-  color: #111827;
+  border: 1px solid var(--v-border);
+  border-radius: var(--v-radius-card);
+  background: var(--v-card);
+  color: var(--v-ink);
   touch-action: none;
 }
 
@@ -186,10 +260,10 @@ pre {
   height: 16px;
   min-height: 16px;
   padding: 0;
-  border: 0;
+  border: 2px solid #ffffff;
   border-radius: 999px;
-  background: var(--ink-error);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  background: var(--v-error);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .mistakeBubble {
@@ -197,70 +271,163 @@ pre {
   left: -80px;
   bottom: 24px;
   width: 220px;
-  border-radius: 14px;
-  background: rgba(26, 26, 26, 0.94);
-  color: white;
+  border-radius: var(--v-radius-card);
+  background: var(--v-card);
+  border: 1px solid var(--v-border);
+  box-shadow: var(--v-shadow-lg);
+  color: var(--v-text);
   padding: 0.75rem;
 }
 
 .mistakeBubble p {
   margin: 0.35rem 0;
+  font-size: 14px;
+  color: var(--v-text-secondary);
 }
 
 .mistakeBubble button {
   min-height: 36px;
-  border-color: rgba(255, 255, 255, 0.25);
-  color: white;
+  border-color: var(--v-primary);
+  background: var(--v-primary-muted);
+  color: var(--v-primary);
+  font-size: 13px;
+}
+
+.actionRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 4px 2px;
+}
+
+.actionRow span {
+  color: var(--v-text-muted);
+  font-size: 14px;
+}
+
+.analyzingBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--v-border);
+  border-radius: var(--v-radius-card);
+  background: var(--v-card);
+  color: var(--v-text-muted);
+  font-size: 13px;
 }
 
 .sidePanel .card {
   display: grid;
-  gap: 0.85rem;
+  gap: 0.75rem;
 }
 
 .muted,
 .emptyChat {
-  color: var(--ink-muted);
+  color: var(--v-text-muted);
+  font-size: 14px;
 }
 
 .errorText {
-  color: var(--ink-error);
+  color: var(--v-error);
+  font-size: 14px;
 }
 
 .chatPanel {
-  margin-top: 1rem;
+  margin-top: 12px;
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--v-border);
+}
+
+.chatHeader h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--v-text);
+}
+
+.quickActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--v-border);
+}
+
+.quickActions button {
+  min-height: 32px;
+  padding: 6px 12px;
+  border-radius: var(--v-radius-button);
+  border-color: var(--v-border-strong);
+  background: var(--v-surface);
+  color: var(--v-text-secondary);
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .messages {
   display: grid;
   max-height: 320px;
   overflow-y: auto;
-  gap: 0.65rem;
+  gap: 10px;
+  padding: 14px 0;
 }
 
 .message {
-  max-width: 78ch;
-  border-radius: 14px;
-  padding: 0.75rem;
+  max-width: 80%;
+  border-radius: var(--v-radius-card);
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .message.student {
   justify-self: end;
-  background: var(--ink-accent);
-  color: white;
+  background: var(--v-primary);
+  color: #ffffff;
 }
 
 .message.assistant {
   justify-self: start;
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--v-surface);
+  color: var(--v-text);
 }
 
 .chatInput {
-  align-items: end;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  padding-top: 10px;
+  border-top: 1px solid var(--v-border);
 }
 
 .chatInput textarea {
   flex: 1 1 280px;
+  min-height: 40px;
+  max-height: 100px;
+}
+
+.chatInput button {
+  border-color: var(--v-primary);
+  background: var(--v-primary);
+  color: #ffffff;
+}
+
+.chatInput button:disabled {
+  background: var(--v-surface);
+  border-color: var(--v-border);
+  color: var(--v-text-disabled);
 }
 
 @media (max-width: 900px) {
@@ -269,6 +436,10 @@ pre {
   }
 
   .canvasSurface {
-    min-height: 54dvh;
+    min-height: 50dvh;
+  }
+
+  .toolBtn.clearBtn {
+    margin-left: 0;
   }
 }
