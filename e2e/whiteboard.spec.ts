@@ -39,6 +39,40 @@ test("draws, undoes, redoes, and persists strokes", async ({ page }) => {
   await expect(page.getByTestId("ink-svg").locator("path")).toHaveCount(1);
 });
 
+test("keyboard shortcuts switch tools and support shift-draw", async ({ page }) => {
+  await expect(page.getByText("← pen · → eraser · Shift+move")).toBeVisible();
+
+  await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("button", { name: "Eraser tool" })).toHaveAttribute("aria-pressed", "true");
+
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.getByRole("button", { name: "Pen tool" })).toHaveAttribute("aria-pressed", "true");
+
+  const canvas = page.getByTestId("whiteboard-canvas");
+  const box = await canvas.boundingBox();
+  if (!box) throw new Error("Canvas bounding box unavailable");
+
+  await page.keyboard.down("Shift");
+  await page.mouse.move(box.x + 90, box.y + 100);
+  await page.mouse.move(box.x + 180, box.y + 150, { steps: 6 });
+  await page.keyboard.up("Shift");
+
+  await expect(page.getByTestId("ink-svg").locator("path")).toHaveCount(1);
+});
+
+test("keyboard undo and redo", async ({ page }) => {
+  await drawStroke(page);
+  const paths = page.getByTestId("ink-svg").locator("path");
+  await expect(paths).toHaveCount(1);
+
+  const mod = process.platform === "darwin" ? "Meta" : "Control";
+  await page.keyboard.press(`${mod}+KeyZ`);
+  await expect(paths).toHaveCount(0);
+
+  await page.keyboard.press(`${mod}+Shift+KeyZ`);
+  await expect(paths).toHaveCount(1);
+});
+
 test("shows a helpful message when analyzing an empty canvas", async ({ page }) => {
   await page.getByTestId("analyze-work").click();
   await expect(page.getByText("Write some work on the whiteboard first.")).toBeVisible();

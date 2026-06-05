@@ -255,6 +255,20 @@ pre {
   cursor: cell;
 }
 
+.canvasSurface.shiftHeld.pen {
+  cursor: crosshair;
+}
+
+.canvasSurface.shiftHeld.eraser {
+  cursor: cell;
+}
+
+.shortcutHint {
+  margin: 6px 0 0;
+  color: var(--v-text-disabled);
+  font-size: 11px;
+}
+
 .inkSvg,
 .mistakeOverlay {
   position: absolute;
