@@ -1,8 +1,10 @@
 # Veridian Whiteboard
 
-Solo local-first AI math whiteboard. Separate nested git repo under the Jon-fun workspace — follows Jon-fun docs/style, not part of the game hub deploy.
+Solo local-first AI math whiteboard. Standalone Next.js app — separate from the [Jon-fun](https://sfjc.dev) game hub.
 
-**Separation:** [docs/VERIDIAN_WORKSPACE.md](../docs/VERIDIAN_WORKSPACE.md) · **Agent standards:** [WORKING.md](WORKING.md) · **Git push safety:** [REMOTES.md](REMOTES.md)
+**Live:** [veridian-whiteboard.vercel.app](https://veridian-whiteboard.vercel.app) · **Custom domain (pending DNS):** [veridian.sfjc.dev](https://veridian.sfjc.dev)
+
+**Repo:** [github.com/sfjchen/veridian-whiteboard](https://github.com/sfjchen/veridian-whiteboard) · **Agent standards:** [WORKING.md](WORKING.md) · **Remotes:** [REMOTES.md](REMOTES.md)
 
 ## Scope
 
@@ -33,7 +35,8 @@ Optional legacy: `OPENAI_API_KEY` for OpenAI-only OCR if OpenRouter is unset.
 
 Standalone project on [sfjc.dev](https://sfjc.dev) — **not** the Jon-fun game hub.
 
-- **Production URL:** `https://veridian.sfjc.dev`
+- **Production URL:** [veridian-whiteboard.vercel.app](https://veridian-whiteboard.vercel.app)
+- **Custom domain (after Cloudflare DNS):** `https://veridian.sfjc.dev`
 - **Vercel project:** `veridian-whiteboard` (team `sfjchen-projects`)
 - **GitHub:** `sfjchen/veridian-whiteboard`
 
@@ -71,11 +74,15 @@ Or `CNAME` `veridian` → `cname.vercel-dns.com`. Vercel verifies automatically 
 - `npm run lint` — ESLint
 - `npm run type-check` — TypeScript
 - `npm run smoke:api` — verify route contracts without live AI keys
+- `npm run smoke:deploy` — verify production deployment (default URL above)
+- `npm run smoke:deploy:live` — production smoke plus one live chat call
+- `npm run test:e2e:deployment` — Playwright against production (no local dev server)
 
 ## Changelog
 
 **2026-06**
 
 - Strengthened API request validation so malformed analyze/chat requests return `400` before AI-key checks, and expanded Playwright coverage for exact validation errors plus mistake-hint chat handoff.
-- Switched OCR to OpenRouter Gemini when `OPENROUTER_API_KEY` is set (single-key deploy). Vercel production at `veridian.sfjc.dev`.
+- Added production deploy smoke (`npm run smoke:deploy`) and Playwright deployment spec (`npm run test:e2e:deployment`) against `veridian-whiteboard.vercel.app`.
+- Switched OCR to OpenRouter Gemini when `OPENROUTER_API_KEY` is set (single-key deploy). Vercel project `veridian-whiteboard` live at [veridian-whiteboard.vercel.app](https://veridian-whiteboard.vercel.app); custom domain `veridian.sfjc.dev` pending Cloudflare DNS.
 - Refactored from the original teacher/student EdTech platform into a clean Next.js App Router whiteboard app. Kept the core canvas → OCR → mistake analysis → coordinate overlay → chat workflow, removed Supabase/auth/classroom/platform code for v1, and added local-first browser persistence.

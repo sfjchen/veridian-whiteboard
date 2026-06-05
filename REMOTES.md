@@ -18,7 +18,8 @@ Verify: `git remote -v`
 
 ## Deploy
 
-- **Vercel:** project `veridian-whiteboard` → `https://veridian.sfjc.dev`
+- **Vercel:** project `veridian-whiteboard` → https://veridian-whiteboard.vercel.app
+- **Custom domain:** `veridian.sfjc.dev` (add Cloudflare DNS — see README)
 - **Jon-fun hub:** `sfjc.dev` only — no whiteboard routes under parent `src/`
 
 ## EdTech work
