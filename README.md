@@ -78,7 +78,8 @@ Jon-fun `next.config.mjs` rewrites `/veridian` → this app (`VERIDIAN_ORIGIN`, 
 - `npm run build` — production build
 - `npm run lint` — ESLint
 - `npm run type-check` — TypeScript
-- `npm run smoke:api` — verify route contracts without live AI keys
+- `npm run smoke:api` — verify route contracts on prod (default `sfjc.dev/veridian`)
+- `npm run smoke:api:local` — same checks against local dev server
 - `npm run smoke:deploy` — verify production deployment (default URL above)
 - `npm run smoke:deploy:live` — production smoke plus one live chat call
 - `npm run test:e2e:deployment` — Playwright against production (no local dev server)

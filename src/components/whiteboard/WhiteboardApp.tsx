@@ -167,7 +167,7 @@ export function WhiteboardApp() {
           <h1 className="wordmark">Veridian</h1>
           <p className="tagline">Local-first AI math whiteboard — write, analyze mistakes, ask for hints.</p>
           {videoDemo && (
-            <div className="demoBanner" data-testid="video-demo-banner">
+            <div className="demoBanner" data-testid="video-demo-banner" role="note" aria-label="Video demo problem">
               <strong>{DEMO_PROBLEM_TITLE}</strong>
               <span>{DEMO_PROBLEM_HINT}</span>
             </div>

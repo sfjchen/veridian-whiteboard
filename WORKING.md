@@ -34,7 +34,7 @@ npm run dev          # :3000 — stop Jon-fun dev first if both on one machine
 npm run build
 npm run lint
 npm run type-check
-npm run smoke:api
+npm run smoke:api          # prod (sfjc.dev) by default; SMOKE_LOCAL=1 or smoke:api:local for localhost
 npm run test:e2e     # PLAYWRIGHT_WEB_PORT=3011 by default
 ```
 
