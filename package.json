@@ -10,7 +10,10 @@
     "type-check": "tsc --noEmit",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "smoke:api": "tsx scripts/smoke-api.ts"
+    "test:e2e:deployment": "PLAYWRIGHT_SKIP_WEBSERVER=1 CI=1 playwright test e2e/deployment.spec.ts",
+    "smoke:api": "tsx scripts/smoke-api.ts",
+    "smoke:deploy": "tsx scripts/smoke-deploy.ts",
+    "smoke:deploy:live": "SMOKE_LIVE_AI=1 tsx scripts/smoke-deploy.ts"
   },
   "dependencies": {
     "next": "^16.2.7",
