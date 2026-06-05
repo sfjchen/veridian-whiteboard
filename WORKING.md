@@ -66,6 +66,22 @@ npm run test:e2e     # PLAYWRIGHT_WEB_PORT=3011 by default
 
 ## Reference (parent repo)
 
-- [Jon-fun README](../README.md) — core design principles
-- [docs/DESIGN-SYSTEM.md](../docs/DESIGN-SYSTEM.md) — ink/notebook tokens
+- [Jon-fun README](../README.md) — core workflow principles (not whiteboard visual design)
 - [docs/VERIDIAN_WORKSPACE.md](../docs/VERIDIAN_WORKSPACE.md) — three-project separation
+- [docs/DESIGN-SYSTEM.md](../docs/DESIGN-SYSTEM.md) — **Jon-fun games only** (ink/notebook). Whiteboard uses original Veridian org palette in `src/app/globals.css`.
+
+## Parallel Cursor chats — reconciled intent (2026-06)
+
+If multiple agents touched Veridian at once, use this table:
+
+| Topic | **Do (whiteboard v1)** | **Don't (legacy EdTech chats)** |
+|-------|------------------------|----------------------------------|
+| **URL** | [sfjc.dev/veridian](https://sfjc.dev/veridian) | `www.veridian.fyi`, Render URLs as primary demo |
+| **Repo** | `Jon-fun/Veridian/` → `sfjchen/veridian-whiteboard` | Push to `sfjchen/Veridian` EdTech fork |
+| **Stack** | Next.js + Vercel API routes + OpenRouter | Expo + Flask Render + Supabase for demo |
+| **Auth** | None | Supabase login (even with demo bypass) |
+| **AI keys** | `OPENROUTER_API_KEY` in `Veridian/.env.local` + Vercel | Mix Jon-fun Supabase JWT or EdTech keys here |
+| **Design** | Original Veridian org (green, DM Sans, forest) | Jon-fun notebook burgundy/Georgia |
+| **Render** | Not needed for whiteboard | Only for `Desktop/Veridian/` EdTech backend |
+
+**Render is not required** for the sfjc.dev whiteboard — OCR, analysis, and chat all run in Next.js `/api/*` on Vercel.

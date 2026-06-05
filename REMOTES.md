@@ -18,10 +18,10 @@ Verify: `git remote -v`
 
 ## Deploy
 
-- **Vercel:** project `veridian-whiteboard` → https://veridian-whiteboard.vercel.app
-- **Custom domain:** `veridian.sfjc.dev` (add Cloudflare DNS — see README)
-- **Jon-fun hub:** `sfjc.dev` only — no whiteboard routes under parent `src/`
+- **Primary URL:** [sfjc.dev/veridian](https://sfjc.dev/veridian) — proxied by Jon-fun (`next.config.mjs` rewrite)
+- **Vercel origin:** project `veridian-whiteboard` → `veridian-whiteboard.vercel.app/veridian`
+- **No Render, no Supabase, no subdomain DNS** for whiteboard v1 — all AI runs on Vercel serverless routes
 
-## EdTech work
+## EdTech work (legacy, separate repo)
 
 Use `/Users/jchen04mac/Desktop/Veridian/` — not this folder.

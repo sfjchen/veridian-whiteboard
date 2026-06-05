@@ -12,7 +12,7 @@ for line in (ROOT / ".env.local").read_text().splitlines():
     key, value = line.split("=", 1)
     vals[key.strip()] = value.strip()
 
-vals["OPENROUTER_SITE_URL"] = "https://veridian.sfjc.dev"
+vals["OPENROUTER_SITE_URL"] = "https://sfjc.dev/veridian"
 
 keys = [
     "OPENROUTER_API_KEY",
