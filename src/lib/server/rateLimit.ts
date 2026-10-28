@@ -27,8 +27,11 @@ const hits = new Map<string, number[]>();
  * Rejected requests are not recorded, so waiting out the window always frees a slot.
  */
 export function checkDemoLimit(request: Request, route: keyof typeof DEMO_CAPS): string | null {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      request.headers.get("x-real-ip") || "unknown";
+  /* sfjc.dev sits behind Cloudflare, so proxied requests carry Cloudflare edge IPs; Vercel sets x-forwarded-host itself,
+   * so cf-connecting-ip is trusted only on requests that really came through sfjc.dev. */
+  const h = request.headers;
+  const viaSite = h.get("x-forwarded-host") === "sfjc.dev";
+  const ip = (viaSite && h.get("cf-connecting-ip")) || h.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const key = `${route}:${ip}`;
   const now = Date.now();
   const caps = DEMO_CAPS[route];
