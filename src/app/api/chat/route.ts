@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateChatResponse } from "@/lib/server/ai";
+import { checkDemoLimit } from "@/lib/server/rateLimit";
 import type { ChatMessage } from "@/lib/whiteboard/types";
 
 export const runtime = "nodejs";
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
     if (!message) {
       return NextResponse.json({ error: "message is required." }, { status: 400 });
     }
-    if (message.length > 5000) {
+    if (message.length > 2000) {
       return NextResponse.json({ error: "message is too long." }, { status: 400 });
     }
     if (!process.env.OPENROUTER_API_KEY) {
@@ -52,12 +53,16 @@ export async function POST(request: Request) {
       );
     }
 
+    const limited = checkDemoLimit(request, "chat");
+    if (limited) return NextResponse.json({ error: limited }, { status: 429 });
+
+    const str = (v: unknown) => (typeof v === "string" ? v.slice(0, 4000) : "");
     const content = await generateChatResponse({
       message,
-      history: parseHistory(payload.history),
-      analysisSummary: typeof payload.analysisSummary === "string" ? payload.analysisSummary : "",
-      referenceTex: typeof payload.referenceTex === "string" ? payload.referenceTex : "",
-      contextTex: typeof payload.contextTex === "string" ? payload.contextTex : "",
+      history: parseHistory(payload.history).slice(-12).map((m) => ({ ...m, content: m.content.slice(0, 2000) })),
+      analysisSummary: str(payload.analysisSummary),
+      referenceTex: str(payload.referenceTex),
+      contextTex: str(payload.contextTex),
     });
     return NextResponse.json({
       role: "assistant",

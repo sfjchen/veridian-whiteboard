@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { analyzeWhiteboard } from "@/lib/server/ai";
+import { checkDemoLimit } from "@/lib/server/rateLimit";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -24,6 +25,9 @@ export async function POST(request: Request) {
     if (!file.type.startsWith("image/")) {
       return NextResponse.json({ error: "image must be an image file." }, { status: 400 });
     }
+    if (file.size > 15_000_000) {
+      return NextResponse.json({ error: "image is too large." }, { status: 413 });
+    }
     if (!isConfigured()) {
       return NextResponse.json(
         { error: "AI is not configured. Set OPENROUTER_API_KEY." },
@@ -31,12 +35,15 @@ export async function POST(request: Request) {
       );
     }
 
+    const limited = checkDemoLimit(request, "analyze");
+    if (limited) return NextResponse.json({ error: limited }, { status: 429 });
+
     const imageBytes = Buffer.from(await file.arrayBuffer());
     const result = await analyzeWhiteboard({
       imageBytes,
       mimeType: file.type || "image/png",
-      referenceTex: String(form.get("reference_tex") ?? ""),
-      contextTex: String(form.get("context_tex") ?? ""),
+      referenceTex: String(form.get("reference_tex") ?? "").slice(0, 4000),
+      contextTex: String(form.get("context_tex") ?? "").slice(0, 4000),
       includeSolution: String(form.get("include_solution") ?? "true") !== "false",
     });
     return NextResponse.json({

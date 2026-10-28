@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MathText } from "@/components/whiteboard/MathText";
 import type { ChatMessage } from "@/lib/whiteboard/types";
 
 type ChatPanelProps = {
@@ -44,7 +45,7 @@ export function ChatPanel({ messages, loading, error, onSend }: ChatPanelProps) 
         ) : (
           messages.map((message) => (
             <div className={`message ${message.role}`} key={message.id}>
-              {message.content}
+              <MathText text={message.content} />
             </div>
           ))
         )}

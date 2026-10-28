@@ -423,6 +423,7 @@ pre {
   padding: 10px 12px;
   font-size: 14px;
   line-height: 1.45;
+  white-space: pre-wrap;
 }
 
 .message.student {

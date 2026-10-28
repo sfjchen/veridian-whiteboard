@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { MathText } from "@/components/whiteboard/MathText";
 import type { Mistake } from "@/lib/whiteboard/types";
 
 type MistakeOverlayProps = {
@@ -51,7 +52,7 @@ export function MistakeOverlay({ mistakes, canvasSize, onAsk }: MistakeOverlayPr
             {active && (
               <div className="mistakeBubble" style={{ transform: left < 110 ? "translateX(90px)" : undefined }}>
                 <strong>{mistake.tag.replace(/-/g, " ")}</strong>
-                <p>{mistake.explanation}</p>
+                <p><MathText text={mistake.explanation} /></p>
                 <button
                   type="button"
                   onPointerDown={(event) => event.stopPropagation()}

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChatPanel } from "@/components/whiteboard/ChatPanel";
 import { ForestBackground } from "@/components/whiteboard/ForestBackground";
 import { InkCanvas } from "@/components/whiteboard/InkCanvas";
+import { MathText } from "@/components/whiteboard/MathText";
 import { MistakeOverlay } from "@/components/whiteboard/MistakeOverlay";
 import { apiPath } from "@/lib/whiteboard/api-path";
 import { strokesToPngBlob } from "@/lib/whiteboard/capture";
@@ -98,6 +99,7 @@ export function WhiteboardApp() {
 
   const analysisText = useMemo(() => {
     if (!analysis) return "No analysis yet.";
+    if (!analysis.studentTex.trim()) return "Couldn't read any math, try writing more clearly.";
     if (analysis.mistakeCount === 0) return "No mistakes found.";
     return `Found ${analysis.mistakeCount} mistake${analysis.mistakeCount === 1 ? "" : "s"}.`;
   }, [analysis]);
@@ -218,8 +220,8 @@ export function WhiteboardApp() {
               {analysis ? (
                 <>
                   <p>{analysisText}</p>
-                  <pre>{analysis.studentTex}</pre>
-                  {analysis.continuationTex && <p className="muted">Next step: {analysis.continuationTex}</p>}
+                  {analysis.studentTex.trim() && <pre><MathText text={analysis.studentTex} /></pre>}
+                  {analysis.continuationTex && <p className="muted">Next step: <MathText text={analysis.continuationTex} /></p>}
                 </>
               ) : (
                 <p className="muted">Analysis results will appear here.</p>

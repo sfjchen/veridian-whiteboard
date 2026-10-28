@@ -95,6 +95,10 @@ src/lib/whiteboard/          capture, types, localStorage
 
 ## Changelog
 
+**2026-10**
+
+- Canvas/OCR/analysis text sent to AI as tag-stripped `<untrusted_canvas_data>` blocks with an OCR system prompt; chat analysis summary is now wrapped too.
+
 **2026-06**
 
 - README tightened to rubric Q1–Q4; full video script stays in `docs/VIDEO_DEMO_RUBRIC.md`.
