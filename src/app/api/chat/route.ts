@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateChatResponse } from "@/lib/server/ai";
-import { checkDemoLimit } from "@/lib/server/rateLimit";
+import { checkProxyGate } from "@/lib/server/proxyGate";
 import type { ChatMessage } from "@/lib/whiteboard/types";
 
 export const runtime = "nodejs";
@@ -53,8 +53,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const limited = checkDemoLimit(request, "chat");
-    if (limited) return NextResponse.json({ error: limited }, { status: 429 });
+    const denied = checkProxyGate(request);
+    if (denied) return NextResponse.json({ error: denied }, { status: 403 });
 
     const str = (v: unknown) => (typeof v === "string" ? v.slice(0, 4000) : "");
     const content = await generateChatResponse({

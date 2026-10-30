@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { analyzeWhiteboard } from "@/lib/server/ai";
-import { checkDemoLimit } from "@/lib/server/rateLimit";
+import { checkProxyGate } from "@/lib/server/proxyGate";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -35,8 +35,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const limited = checkDemoLimit(request, "analyze");
-    if (limited) return NextResponse.json({ error: limited }, { status: 429 });
+    const denied = checkProxyGate(request);
+    if (denied) return NextResponse.json({ error: denied }, { status: 403 });
 
     const imageBytes = Buffer.from(await file.arrayBuffer());
     const result = await analyzeWhiteboard({
